@@ -1,0 +1,23 @@
+name: mobile_app_for_country_info_with_theme_customization
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  cached_network_image: ^3.4.1
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.6.1
+  http: ^1.3.0
+  shared_preferences: ^2.5.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
