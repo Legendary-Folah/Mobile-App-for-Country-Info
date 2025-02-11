@@ -9,19 +9,32 @@ class ApiService {
 
   Future<List<dynamic>> fetchCountries() async {
     try {
+      final Uri uri = Uri.parse("$baseUrl/countries");
+      print("Fetching countries from: $uri");
+      print('token : $apiKey');
+
       final response = await http.get(
-        Uri.parse("$baseUrl/countries"),
-        headers: {"Authorization": "Bearer $apiKey"},
+        uri,
+        headers: {
+          "Authorization": "Bearer $apiKey",
+          "Content-Type": "application/json",
+        },
       );
 
-      if (response.statusCode == 200) {
-        return json.decode(response.body)['data'];
+      print("Response Status Code: ${response.statusCode}");
+      print("Response Body: ${response.body}");
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final jsonResponse = json.decode(response.body);
+        print("Parsed JSON Response: $jsonResponse");
+        return jsonResponse['data'];
       } else {
-        throw Exception("Failed to load countries");
+        throw Exception(
+            "Failed to load countries. Status code: ${response.statusCode}");
       }
     } catch (e) {
-      print(e);
-      throw Exception('Error : $e');
+      print("Error in fetchCountries: $e");
+      throw Exception('Error: $e');
     }
   }
 
@@ -29,10 +42,13 @@ class ApiService {
     try {
       final response = await http.get(
         Uri.parse("$baseUrl/countries/$countryCode"),
-        headers: {"Authorization": "Bearer $apiKey"},
+        headers: {
+          "Authorization": "Bearer $apiKey",
+          "Content-Type": "application/json",
+        },
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return json.decode(response.body)['data'];
       } else {
         throw Exception("Failed to load country details");

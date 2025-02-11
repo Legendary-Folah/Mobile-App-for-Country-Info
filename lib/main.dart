@@ -21,6 +21,7 @@ class MainApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(appThemeProvider);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: theme,
       home: HomeScreen(),
     );

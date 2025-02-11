@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_app_for_country_info_with_theme_customization/provider/country_provider.dart';
@@ -13,51 +14,95 @@ class HomeScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Countries"),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.brightness_6),
-            onPressed: () {
-              ref.read(themeProvider.notifier).state = !ref.read(themeProvider);
-            },
+        title: Text(
+          "Explore",
+          style: TextStyle(
+            fontSize: 16,
+            letterSpacing: 1.5,
           ),
+        ),
+        actions: [
+          Consumer(
+            builder: (context, ref, child) {
+              final isDarkMode = ref.watch(themeProvider);
+              return IconButton(
+                icon: isDarkMode
+                    ? Icon(Icons.dark_mode_outlined)
+                    : Icon(Icons.light_mode_outlined),
+                onPressed: () {
+                  ref.read(themeProvider.notifier).state = !isDarkMode;
+                },
+              );
+            },
+          )
         ],
       ),
       body: Column(
+        spacing: 10,
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: TextField(
               decoration: InputDecoration(
-                hintText: "Search for a country...",
-                border: OutlineInputBorder(),
+                hintText: "Search Country",
                 prefixIcon: Icon(Icons.search),
               ),
+              textAlign: TextAlign.center,
               onChanged: (value) {
                 ref.read(searchQueryProvider.notifier).state = value;
               },
             ),
           ),
           Expanded(
-            child: filteredCountries.isEmpty
-                ? Center(child: Text("No countries found"))
-                : ListView.builder(
-                    itemCount: filteredCountries.length,
-                    itemBuilder: (context, index) {
-                      final country = filteredCountries[index];
-                      return ListTile(
-                        title: Text(country['name']),
-                        onTap: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => CountryDetailScreen(countryCode: country['code']),
-                          //   ),
-                          // );
-                        },
+            child: ref.watch(countryFutureProvider).when(
+                  data: (countries) {
+                    if (filteredCountries.isEmpty) {
+                      return Center(
+                        child: Text(
+                          "No countries found",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       );
-                    },
+                    }
+                    return ListView.builder(
+                      itemCount: filteredCountries.length,
+                      itemBuilder: (context, index) {
+                        final country = filteredCountries[index];
+                        return ListTile(
+                          leading: country['picture'] != null
+                              ? CachedNetworkImage(
+                                  imageUrl: country['picture'],
+                                  width: 50,
+                                  height: 50,
+                                  placeholder: (context, url) =>
+                                      CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) =>
+                                      Icon(Icons.error),
+                                )
+                              : Icon(Icons.flag), // F
+                          title: Text(country['name']),
+                          subtitle: Text(country['capital']),
+                          onTap: () {
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => CountryDetailScreen(countryCode: country['code']),
+                            //   ),
+                            // );
+                          },
+                        );
+                      },
+                    );
+                  },
+                  loading: () => Center(child: CircularProgressIndicator()),
+                  error: (error, _) => Center(
+                    child: Text(
+                      "Error: $error",
+                    ),
                   ),
+                ),
           ),
         ],
       ),

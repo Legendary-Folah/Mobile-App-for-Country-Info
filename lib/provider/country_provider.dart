@@ -1,8 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_app_for_country_info_with_theme_customization/APIService/api_service.dart';
 
+final apiServiceProvider = Provider<ApiService>((ref) => ApiService());
+
 final countryFutureProvider = FutureProvider<List<dynamic>>((ref) async {
-  final apiService = ApiService();
+  final apiService = ref.read(apiServiceProvider);
   return apiService.fetchCountries();
 });
 
