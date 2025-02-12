@@ -5,10 +5,14 @@ class CustomRichText extends StatelessWidget {
     super.key,
     required this.text1,
     required this.text2,
+    required this.color1,
+    required this.color2,
   });
 
   final String text1;
   final String text2;
+  final Color color1;
+  final Color color2;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +24,7 @@ class CustomRichText extends StatelessWidget {
             fontSize: 16,
             fontFamily: 'Axiforma',
             fontWeight: FontWeight.w600,
-            color: Colors.black,
+            color: color1,
           ),
         ),
         TextSpan(
@@ -28,7 +32,7 @@ class CustomRichText extends StatelessWidget {
             style: TextStyle(
               fontSize: 16,
               fontFamily: 'Axiforma',
-              color: Colors.black,
+              color: color2,
             ))
       ]),
     );
