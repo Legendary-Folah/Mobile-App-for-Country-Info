@@ -20,11 +20,19 @@ final filteredCountriesProvider = Provider<List<dynamic>>((ref) {
         return countries;
       }
       return countries
-          .where((country) =>
-              country['name'].toLowerCase().contains(searchQuery.toLowerCase()))
+          .where((country) => country['name']?['common']
+              ?.toLowerCase()
+              .contains(searchQuery.toLowerCase()))
           .toList();
     },
     loading: () => [],
     error: (_, __) => [],
   );
+});
+
+final countryDetailsProvider =
+    FutureProvider.family<Map<String, dynamic>, String>(
+        (ref, countryCode) async {
+  final apiService = ApiService();
+  return apiService.fetchCountryDetails(countryCode);
 });

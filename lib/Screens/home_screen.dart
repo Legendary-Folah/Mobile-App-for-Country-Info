@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile_app_for_country_info_with_theme_customization/Screens/country_details_screen.dart';
 import 'package:mobile_app_for_country_info_with_theme_customization/provider/country_provider.dart';
 import 'package:mobile_app_for_country_info_with_theme_customization/provider/theme_provider.dart';
 
@@ -10,7 +11,7 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final filteredCountries = ref.watch(filteredCountriesProvider);
-    final searchQuery = ref.watch(searchQueryProvider);
+    final isDarkMode = ref.watch(themeProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -22,17 +23,12 @@ class HomeScreen extends ConsumerWidget {
           ),
         ),
         actions: [
-          Consumer(
-            builder: (context, ref, child) {
-              final isDarkMode = ref.watch(themeProvider);
-              return IconButton(
-                icon: isDarkMode
-                    ? Icon(Icons.dark_mode_outlined)
-                    : Icon(Icons.light_mode_outlined),
-                onPressed: () {
-                  ref.read(themeProvider.notifier).state = !isDarkMode;
-                },
-              );
+          IconButton(
+            icon: isDarkMode
+                ? Icon(Icons.dark_mode_outlined)
+                : Icon(Icons.light_mode_outlined),
+            onPressed: () {
+              ref.read(themeProvider.notifier).state = !isDarkMode;
             },
           )
         ],
@@ -71,26 +67,29 @@ class HomeScreen extends ConsumerWidget {
                       itemBuilder: (context, index) {
                         final country = filteredCountries[index];
                         return ListTile(
-                          leading: country['picture'] != null
+                          leading: country['flags']?['png'] != null
                               ? CachedNetworkImage(
-                                  imageUrl: country['picture'],
-                                  width: 50,
-                                  height: 50,
+                                  imageUrl: country['flags']['png'],
+                                  width: 40,
+                                  height: 40,
                                   placeholder: (context, url) =>
                                       CircularProgressIndicator(),
                                   errorWidget: (context, url, error) =>
                                       Icon(Icons.error),
                                 )
                               : Icon(Icons.flag), // F
-                          title: Text(country['name']),
-                          subtitle: Text(country['capital']),
+                          title: Text(
+                              country['name']?['common'] ?? 'Unknown Country'),
+                          subtitle:
+                              Text(country['capital']?.join(", ") ?? 'N/A'),
                           onTap: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => CountryDetailScreen(countryCode: country['code']),
-                            //   ),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CountryDetailScreen(
+                                    countryCode: country['cca2']),
+                              ),
+                            );
                           },
                         );
                       },

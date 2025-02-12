@@ -26,3 +26,14 @@ flutter:
 
   assets:
     -  .env
+    -  assets/images/
+
+  fonts:
+    - family: Axifroma
+      fonts:
+        - asset: assets/fonts/Kastelov - Axiforma Bold Italic.otf
+        - asset: assets/fonts/Kastelov - Axiforma Bold Italic.otf
+        - asset: assets/fonts/Kastelov - Axiforma Bold Italic.otf
+        - asset: assets/fonts/Kastelov - Axiforma Bold Italic.otf
+        - asset: assets/fonts/Kastelov - Axiforma Bold Italic.otf
+    
