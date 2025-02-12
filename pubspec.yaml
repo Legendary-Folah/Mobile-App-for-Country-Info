@@ -32,8 +32,11 @@ flutter:
     - family: Axifroma
       fonts:
         - asset: assets/fonts/Kastelov - Axiforma Bold Italic.otf
-        - asset: assets/fonts/Kastelov - Axiforma Bold Italic.otf
-        - asset: assets/fonts/Kastelov - Axiforma Bold Italic.otf
-        - asset: assets/fonts/Kastelov - Axiforma Bold Italic.otf
-        - asset: assets/fonts/Kastelov - Axiforma Bold Italic.otf
+        - asset: assets/fonts/Kastelov - Axiforma Black.otf
+        - asset: assets/fonts/Kastelov - Axiforma Black Italic.otf
+        - asset: assets/fonts/Kastelov - Axiforma Bold.otf
+        - asset: assets/fonts/Kastelov - Axiforma Book.otf
+        - asset: assets/fonts/Kastelov - Axiforma Thin.otf
+        - asset: assets/fonts/Kastelov - Axiforma Regular.otf
+        - asset: assets/fonts/Kastelov - Axiforma Medium.otf
     

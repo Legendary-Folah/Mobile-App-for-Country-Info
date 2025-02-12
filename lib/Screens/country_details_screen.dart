@@ -11,34 +11,25 @@ class CountryDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final countryDetailsAsync = ref.watch(countryDetailsProvider(countryCode));
+    final countryDetails = ref.watch(countryDetailsProvider(countryCode));
     final isDarkMode = ref.watch(themeProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: countryDetailsAsync.when(
+        centerTitle: true,
+        title: countryDetails.when(
           data: (country) => Text(
             country['name']?['common'] ?? 'Country Details',
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
           loading: () => CircularProgressIndicator(),
           error: (error, _) => Text("Error"),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              isDarkMode ? Icons.light_mode : Icons.dark_mode,
-            ),
-            onPressed: () {
-              ref.read(themeProvider.notifier).state = !isDarkMode;
-            },
-          )
-        ],
       ),
-      body: countryDetailsAsync.when(
+      body: countryDetails.when(
         data: (country) => SingleChildScrollView(
           padding: EdgeInsets.all(16),
           child: Column(

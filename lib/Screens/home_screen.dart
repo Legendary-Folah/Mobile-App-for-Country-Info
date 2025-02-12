@@ -77,7 +77,7 @@ class HomeScreen extends ConsumerWidget {
                                   errorWidget: (context, url, error) =>
                                       Icon(Icons.error),
                                 )
-                              : Icon(Icons.flag), // F
+                              : Icon(Icons.flag),
                           title: Text(
                               country['name']?['common'] ?? 'Unknown Country'),
                           subtitle:
