@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:mobile_app_for_country_info_with_theme_customization/provider/country_provider.dart';
-import 'package:mobile_app_for_country_info_with_theme_customization/provider/theme_provider.dart';
+import 'package:mobile_app_for_country_info_with_theme_customization/widgets/custom_loader.dart';
+import 'package:mobile_app_for_country_info_with_theme_customization/widgets/custom_rich_text.dart';
 
 class CountryDetailScreen extends ConsumerWidget {
   final String countryCode;
@@ -12,7 +13,6 @@ class CountryDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final countryDetails = ref.watch(countryDetailsProvider(countryCode));
-    final isDarkMode = ref.watch(themeProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -22,104 +22,77 @@ class CountryDetailScreen extends ConsumerWidget {
             country['name']?['common'] ?? 'Country Details',
             style: TextStyle(
               fontSize: 20,
+              fontFamily: 'Axiforma',
               fontWeight: FontWeight.bold,
             ),
           ),
-          loading: () => CircularProgressIndicator(),
+          loading: () => CustomLoader(),
           error: (error, _) => Text("Error"),
         ),
       ),
       body: countryDetails.when(
         data: (country) => SingleChildScrollView(
-          padding: EdgeInsets.all(16),
+          padding: EdgeInsets.symmetric(horizontal: 25),
           child: Column(
+            spacing: 15,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Country Flag
               Center(
                 child: CachedNetworkImage(
                   imageUrl: country['flags']?['png'] ?? '',
-                  width: 120,
+                  width: 200,
                   height: 80,
-                  placeholder: (context, url) => CircularProgressIndicator(),
+                  placeholder: (context, url) => CustomLoader(),
                   errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
               ),
-              SizedBox(height: 20),
-
-              // Country Name
-              Text(
-                country['name']?['common'] ?? 'Unknown Country',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+              CustomRichText(
+                text1: 'Population: ',
+                text2: country['population']?.toString() ?? 'N/A',
               ),
-              SizedBox(height: 10),
-
-              // Capital
-              Text(
-                "Capital: ${country['capital']?.join(", ") ?? 'N/A'}",
-                style: TextStyle(fontSize: 16),
+              CustomRichText(
+                text1: 'Region: ',
+                text2: country['region'] ?? 'N/A',
               ),
-              SizedBox(height: 10),
-
-              // Population
-              Text(
-                "Population: ${country['population']?.toString() ?? 'N/A'}",
-                style: TextStyle(fontSize: 16),
+              CustomRichText(
+                text1: 'Capital: ',
+                text2: country['capital']?.join(", ") ?? 'N/A',
               ),
-              SizedBox(height: 10),
-
-              // Region
-              Text(
-                "Region: ${country['region'] ?? 'N/A'}",
-                style: TextStyle(fontSize: 16),
+              CustomRichText(
+                text1: 'Continent: ',
+                text2: country['continents']?.join(", ") ?? 'N/A',
               ),
-              SizedBox(height: 10),
-
-              // Official Language
-              Text(
-                "Official Language: ${country['languages']?.values.join(", ") ?? 'N/A'}",
-                style: TextStyle(fontSize: 16),
+              const SizedBox(height: 10),
+              CustomRichText(
+                text1: 'Official Language: ',
+                text2: country['languages']?.values.join(", ") ?? 'N/A',
               ),
-              SizedBox(height: 10),
-
-              // Currency
-              Text(
-                "Currency: ${country['currencies']?.values.first['name'] ?? 'N/A'}",
-                style: TextStyle(fontSize: 16),
+              CustomRichText(
+                text1: 'Country Code: ',
+                text2: country['cioc'] ?? 'N/A',
               ),
-              SizedBox(height: 10),
-
-              // Time Zone
-              Text(
-                "Time Zone: ${country['timezones']?.join(", ") ?? 'N/A'}",
-                style: TextStyle(fontSize: 16),
+              const SizedBox(height: 10),
+              CustomRichText(
+                text1: 'Area: ',
+                text2: '${country['area']?.toString() ?? 'N/A'} km²',
               ),
-              SizedBox(height: 10),
-
-              // Additional Details
-              Text(
-                "Additional Details:",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+              CustomRichText(
+                text1: 'Currency: ',
+                text2: country['currencies']?.values.first['name'] ?? 'N/A',
               ),
-              SizedBox(height: 10),
-              Text(
-                "Area: ${country['area']?.toString() ?? 'N/A'} km²",
-                style: TextStyle(fontSize: 16),
+              const SizedBox(height: 10),
+              CustomRichText(
+                text1: 'Time Zone: ',
+                text2: country['timezones']?.join(", ") ?? 'N/A',
               ),
-              Text(
-                "Driving Side: ${country['car']?['side'] ?? 'N/A'}",
-                style: TextStyle(fontSize: 16),
+              CustomRichText(
+                text1: 'Driving Side: ',
+                text2: country['car']?['side'] ?? 'N/A',
               ),
             ],
           ),
         ),
-        loading: () => Center(child: CircularProgressIndicator()),
+        loading: () => Center(child: CustomLoader()),
         error: (error, _) => Center(
           child: Text(
             "Error: $error",

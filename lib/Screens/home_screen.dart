@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_app_for_country_info_with_theme_customization/Screens/country_details_screen.dart';
 import 'package:mobile_app_for_country_info_with_theme_customization/provider/country_provider.dart';
 import 'package:mobile_app_for_country_info_with_theme_customization/provider/theme_provider.dart';
+import 'package:mobile_app_for_country_info_with_theme_customization/widgets/custom_loader.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -15,13 +16,17 @@ class HomeScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Explore",
-          style: TextStyle(
-            fontSize: 16,
-            letterSpacing: 1.5,
-          ),
-        ),
+        title: isDarkMode
+            ? Image.asset(
+                'assets/images/dark_logo.png',
+                width: 80,
+                height: 35,
+              )
+            : Image.asset(
+                'assets/images/light_logo.png',
+                width: 80,
+                height: 35,
+              ),
         actions: [
           IconButton(
             icon: isDarkMode
@@ -79,9 +84,16 @@ class HomeScreen extends ConsumerWidget {
                                 )
                               : Icon(Icons.flag),
                           title: Text(
-                              country['name']?['common'] ?? 'Unknown Country'),
+                            country['name']?['common'] ?? 'Unknown Country',
+                            style: TextStyle(
+                              fontFamily: 'Axiforma',
+                            ),
+                          ),
                           subtitle:
-                              Text(country['capital']?.join(", ") ?? 'N/A'),
+                              Text(country['capital']?.join(", ") ?? 'N/A',
+                                  style: TextStyle(
+                                    fontFamily: 'Axiforma',
+                                  )),
                           onTap: () {
                             Navigator.push(
                               context,
@@ -95,7 +107,7 @@ class HomeScreen extends ConsumerWidget {
                       },
                     );
                   },
-                  loading: () => Center(child: CircularProgressIndicator()),
+                  loading: () => Center(child: CustomLoader()),
                   error: (error, _) => Center(
                     child: Text(
                       "Error: $error",
