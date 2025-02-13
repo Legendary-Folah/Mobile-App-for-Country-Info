@@ -42,7 +42,7 @@ class HomeScreen extends ConsumerWidget {
         spacing: 10,
         children: [
           Padding(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             child: TextField(
               decoration: InputDecoration(
                 hintText: "Search Country",

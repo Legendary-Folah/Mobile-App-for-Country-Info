@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:mobile_app_for_country_info_with_theme_customization/provider/country_provider.dart';
@@ -39,14 +40,41 @@ class CountryDetailScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
-                child: CachedNetworkImage(
-                  imageUrl: country['flags']?['png'] ?? '',
-                  width: 200,
-                  height: 80,
-                  placeholder: (context, url) => CustomLoader(),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
+                child: Column(
+                  children: [
+                    FlutterCarousel(
+                      options: FlutterCarouselOptions(
+                        height: 300,
+                        initialPage: 0,
+                        showIndicator: true,
+                        slideIndicator: CircularSlideIndicator(),
+                        enlargeCenterPage: true,
+                        enlargeFactor: 0.3,
+                      ),
+                      items: [
+                        CachedNetworkImage(
+                          imageUrl: country['flags']?['png'] ?? '',
+                          width: 200,
+                          height: 160,
+                          placeholder: (context, url) => CustomLoader(),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
+                        ),
+                        if (country['coatOfArms']?['png'] != null)
+                          CachedNetworkImage(
+                            imageUrl: country['coatOfArms']?['png'] ?? '',
+                            width: 200,
+                            height: 160,
+                            placeholder: (context, url) => CustomLoader(),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
+                          ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
+              SizedBox(height: 5),
               CustomRichText(
                 text1: 'Population: ',
                 text2: country['population']?.toString() ?? 'N/A',
