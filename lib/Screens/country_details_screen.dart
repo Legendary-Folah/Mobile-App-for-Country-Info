@@ -15,7 +15,6 @@ class CountryDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final countryDetails = ref.watch(countryDetailsProvider(countryCode));
     final isDarkMode = ref.watch(themeProvider);
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

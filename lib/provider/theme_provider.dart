@@ -11,10 +11,6 @@ final appThemeProvider = Provider<ThemeData>(
     final isDarkMode = ref.watch(themeProvider);
     return isDarkMode
         ? ThemeData.dark().copyWith(
-            // textTheme: TextTheme(
-            //     bodyMedium: TextStyle(
-            //   fontFamily: 'Axiforma',
-            // )),
             inputDecorationTheme: InputDecorationTheme(
               hintStyle: TextStyle(color: Colors.grey[200]),
               filled: true,
@@ -23,10 +19,6 @@ final appThemeProvider = Provider<ThemeData>(
             ),
           )
         : ThemeData.light().copyWith(
-            // textTheme: TextTheme(
-            //     bodyMedium: TextStyle(
-            //   fontFamily: 'Axiforma',
-            // )),
             appBarTheme: AppBarTheme(
               // color: Colors.white,
               backgroundColor: Colors.white,

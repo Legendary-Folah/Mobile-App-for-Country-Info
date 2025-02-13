@@ -62,6 +62,8 @@ class HomeScreen extends ConsumerWidget {
                         child: Text(
                           "No countries found",
                           style: TextStyle(
+                            fontSize: 22,
+                            fontStyle: FontStyle.italic,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

@@ -13,7 +13,6 @@ final searchQueryProvider = StateProvider<String>((ref) => '');
 final filteredCountriesProvider = Provider<List<dynamic>>((ref) {
   final searchQuery = ref.watch(searchQueryProvider);
   final countriesProvider = ref.watch(countryFutureProvider);
-
   return countriesProvider.when(
     data: (countries) {
       if (searchQuery.isEmpty) {
